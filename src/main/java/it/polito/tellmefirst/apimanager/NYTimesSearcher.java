@@ -1,4 +1,23 @@
-package it.polito.tellmefirst;
+/*
+* TellMeFirst - A Knowledge Discovery Application
+*
+* Copyright (C) 2015 Giuseppe Futia
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as
+* published by the Free Software Foundation, either version 3 of the
+* License, or (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU Affero General Public License for more details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
+
+package it.polito.tellmefirst.apimanager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -9,7 +28,7 @@ public class NYTimesSearcher {
     final static String NYT_API = "http://api.nytimes.com/svc/semantic/v2/concept/search";
     final static String API_KEY = "8eb6657c2a9c0793224fb4e27652cc51:1:63640734";
 
-    public static String getSearchApiQuery(String uri, String dbpediaLabel){
+    public String getSearchApiQuery(String uri, String dbpediaLabel){
         LOG.debug("[getSearchApiQuery] - BEGIN");
         String result = "";
         String uriId = uri.split("http://data.nytimes.com/")[1];
