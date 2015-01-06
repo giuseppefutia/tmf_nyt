@@ -29,7 +29,9 @@ public class NYTimesSearcher {
     final static String API_KEY = "8eb6657c2a9c0793224fb4e27652cc51:1:63640734";
 
     public String getSearchApiQuery(String uri, String dbpediaLabel){
+
         LOG.debug("[getSearchApiQuery] - BEGIN");
+
         String result = "";
         String uriId = uri.split("http://data.nytimes.com/")[1];
         String query = "query="+dbpediaLabel+"&concept_uri="+uriId;
