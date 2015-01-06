@@ -9,6 +9,8 @@ This module directly interacts with the [DBpedia Sparql endpoint](http://dbpedia
 Once you have build this module with Maven, you can invoke getNewsFromNYTimes().
 
 	NYTimesEnhancer nyTimesEnhancer = new NYTimesEnhancer();
-	String results = nyTimesEnhancer.getNewsFromNYTimes("http://dbpedia.org/resource/Facebook", "Facebook");
+	String dbpediaURI = http://dbpedia.org/resource/Facebook;
+	String label = Facebook;
+	String results = nyTimesEnhancer.getNewsFromNYTimes(dbpediaURI, label);
 
-The first parameter of getNewsFromNYTimes() is the DBpedia URI, while the second one is the English DBpedia label (both these parameters are included in the results of TellMeFirst classification system).
+The first parameter of getNewsFromNYTimes() is the DBpedia URI, while the second one is a label produced by TellMeFirst from the Wikipedia title of the page (both these parameters are included in the results of TellMeFirst classification system).
