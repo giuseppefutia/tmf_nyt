@@ -6,7 +6,7 @@ This module directly interacts with the [DBpedia Sparql endpoint](http://dbpedia
 
 ## API usage
 
-After building this module with Maven, you can invoke getNewsFromNYTimes().
+Once you bulid this module with Maven, you can invoke getNewsFromNYTimes().
 
 	NYTimesEnhancer nyTimesEnhancer = new NYTimesEnhancer();
 	String dbpediaURI = "http://dbpedia.org/resource/Facebook";
