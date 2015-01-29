@@ -35,7 +35,7 @@ public class NYTimesSearcher {
         String result = "";
         String uriId = uri.split("http://data.nytimes.com/")[1];
         String query = "query="+dbpediaLabel+"&concept_uri="+uriId;
-        result = NYT_API+".json?fields=search_api_query&"+query+"&api-key="+API_KEY;
+        result = NYT_API+".json?fields=article_list&"+query+"&api-key="+API_KEY;
 
         LOG.debug("[getSearchApiQuery] - END");
         return result;
