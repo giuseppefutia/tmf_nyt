@@ -2,7 +2,7 @@
 
 This repository contains the New York Times enhancement module of [TellMeFirst](https://github.com/TellMeFirst/TellMeFirst).
 
-This module directly interacts with the [DBpedia Sparql endpoint](http://dbpedia.org/sparql) and ["The New York Times" semantic APIs](http://developer.nytimes.com/docs/semantic_api in order to retrieve news related to the results of the classification system of TellMeFirst.
+This module directly interacts with the [DBpedia Sparql endpoint](http://dbpedia.org/sparql) and [The New York Times semantic APIs](http://developer.nytimes.com/docs/semantic_api in order to retrieve news related to the results of the classification system of TellMeFirst.
 
 ## API usage
 
