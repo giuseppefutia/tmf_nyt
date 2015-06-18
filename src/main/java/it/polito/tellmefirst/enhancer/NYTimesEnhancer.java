@@ -21,15 +21,18 @@ package it.polito.tellmefirst.enhancer;
 
 
 import com.hp.hpl.jena.query.*;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
 import it.polito.tellmefirst.apimanager.NYTimesSearcher;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 public class NYTimesEnhancer {
 
@@ -42,14 +45,16 @@ public class NYTimesEnhancer {
         nyTimesSearcher = new NYTimesSearcher();
     }
 
-    private String getResultFromAPI(String urlStr){
+    private String getResultFromAPI(String urlStr, String type) {
+
         LOG.debug("[getResultFromAPI] - BEGIN");
         String result = "";
         try{
             URL url = new URL(urlStr);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Accept", type);
             if (conn.getResponseCode() != 200) {
-                throw new IOException(conn.getResponseMessage());
+                System.out.println(conn.getResponseMessage());
             }
             BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             StringBuilder sb = new StringBuilder();
@@ -74,7 +79,6 @@ public class NYTimesEnhancer {
         Query query = QueryFactory.create(queryString);
         QueryExecution querex = QueryExecutionFactory.sparqlService(endpoint, query);
         ResultSet results = querex.execSelect();
-        //ResultSetFormatter.out(System.out, results);
         querex.close() ;
 
         LOG.debug("[executeSparqlQuery] - END");
@@ -111,17 +115,35 @@ public class NYTimesEnhancer {
 
     }
 
-    public String getNewsFromNYTimes(String uri, String label) {
+    public String getNewsFromNYTimes(String uri) {
 
         LOG.debug("[getNewsFromNYTimes] - BEGIN");
 
-        String result;
+        String result = "";
+        String prefLabel = "";
+        String type = "";
+
         String nytUri = getNYTimesURIfromDBpedia(uri);
+        String rdfEntity = getResultFromAPI(nytUri, "application/rdf+xml");
+        Model model = ModelFactory.createDefaultModel();
+        InputStream is = new ByteArrayInputStream(rdfEntity.getBytes());
+        model.read(is, null);
+        StmtIterator statements = model.listStatements();
+        while (statements.hasNext()) {
+            Statement st = statements.next();
+            if(st.getPredicate().asResource().toString().equals("http://www.w3.org/2004/02/skos/core#prefLabel")) {
+                prefLabel = st.getObject().asLiteral().getString();
+            }
+            if(st.getPredicate().asResource().toString().equals("http://www.w3.org/2004/02/skos/core#inScheme")) {
+                type = st.getObject().asResource().toString().split("http://data.nytimes.com/elements/")[1];
+            }
+        }
+
         if(nytUri.equals("")){
             result = "{\"offset\" : \"0\" , \"results\" : [] , \"total\" : 0}";
         } else {
-            String search = nyTimesSearcher.getSearchApiQuery(nytUri, label);
-            result = getResultFromAPI(search);
+            String search = nyTimesSearcher.getSearchApiQuery(prefLabel, type);
+            result = getResultFromAPI(search, "");
         }
         LOG.debug("[getNewsFromNYTimes] - END");
 
@@ -131,8 +153,7 @@ public class NYTimesEnhancer {
     // just for testing
     public static void main(String[] args){
         NYTimesEnhancer nyTimesEnhancer = new NYTimesEnhancer();
-        String results = nyTimesEnhancer.getNewsFromNYTimes("http://dbpedia.org/resource/Facebook", "Facebook");
-        System.out.println(results);
+        String results = nyTimesEnhancer.getNewsFromNYTimes("http://dbpedia.org/resource/Barack_Obama");
     }
 
 }
