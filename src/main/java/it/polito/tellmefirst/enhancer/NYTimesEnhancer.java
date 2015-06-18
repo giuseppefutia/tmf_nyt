@@ -32,7 +32,6 @@ import org.apache.commons.logging.LogFactory;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 
 public class NYTimesEnhancer {
 
