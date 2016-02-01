@@ -6,6 +6,7 @@
 
     <groupId>it.polito.tellmefirst.lodmanager</groupId>
     <artifactId>tmf_nyt</artifactId>
+    <name>TellMeFirst NYTimes Enhancer</name>
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>
